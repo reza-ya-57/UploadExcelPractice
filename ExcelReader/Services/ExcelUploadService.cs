@@ -23,12 +23,13 @@ namespace ExcelReader.Services
         public  List<dynamic> UploadExcel(IFormFile file , short date)
         {
             var list = ExcelReadService.ReadExcel( file,  date);
-            using (var connection = new SqlConnection("Server=rezayari.ir;Database=TaskManagerCodeFirst;User Id=InterviewAccess;Password=InterviewAccess@InterviewAccess;TrustServerCertificate=True"))
+            using (var connection = new SqlConnection(_context.CreateConnection().ConnectionString))
             {
-                var q = "INSERT INTO Report.CompanyScore (Id, Name, Weight, Asisystem, AgenciesScore, CustomerSatisfaction, PerformanceResult, Dsiscore, FinalScore, Rank, AgencyCount, PeriodDate ) VALUES (@Id, @Name, @Weight, @Asisystem, @AgenciesScore, @CustomerSatisfaction, @PerformanceResult, @Dsiscore, @FinalScore, @Rank, @AgencyCount ,@PeriodDate)";
-                // 3. Call the `Execute` method
+                var q = 
+                    "INSERT INTO Report.CompanyScore (Name, Weight, Asisystem, AgenciesScore, CustomerSatisfaction, PerformanceResult, Dsiscore, FinalScore, Rank, AgencyCount, PeriodDate ) VALUES (@Name, @Weight, @Asisystem, @AgenciesScore, @CustomerSatisfaction, @PerformanceResult, @Dsiscore, @FinalScore, @Rank, @AgencyCount ,@PeriodDate)";
+               
                 {
-                    // 3a. The first time, we will pass parameters values with an anonymous type
+                    
                     foreach(var company in list) {
                         connection.Execute(q, company);
                     }

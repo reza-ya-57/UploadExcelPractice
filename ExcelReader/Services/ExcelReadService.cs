@@ -8,57 +8,37 @@ namespace ExcelReader.Services
     {
         public static List<ReportCompanyScore> ReadExcel(IFormFile file,short date)
         {
+            /*var saveFilePath = Path.Combine("c:\\savefilepath\\", file.FileName);
+            if (File.Exists(saveFilePath))
+            {
+
+                File.Delete(saveFilePath);
+            }
+            using (var stream = new FileStream(saveFilePath, FileMode.Create))
+            {
+                file.CopyToAsync(stream);
+
+
+            }*/
 
             /*var originalFileName = @"C:\Users\Rpipc\Documents\pezhman\ASI-Dashboard- EDIT.xlsx";*/
             var reportCompanyScores = new List<ReportCompanyScore>();
 
-
-            
-          
-
-
-            
-                // Choose one of either 1 or 2:
                 System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+
+            /*using (var stream = File.Open(saveFilePath, FileMode.Open, FileAccess.Read))*/
+            
 
                 using (var reader = ExcelReaderFactory.CreateReader(file.OpenReadStream()))
                 {
 
-                    // 1. Use the reader methods
-                    do
-                    {
-                        while (reader.Read())
-                        {
-                            // reader.GetDouble(0);
-                        }
-                    } while (reader.NextResult());
-
-                    // 2. Use the AsDataSet extension method
-
-
-                    var result = reader.AsDataSet(new ExcelDataSetConfiguration()
-                    {
-
-
-
-
-
-                        ConfigureDataTable = (tableReader) => new ExcelDataTableConfiguration()
-                        {
-
-                            UseHeaderRow = true,
-                        }
-                    });
-
-
-
-                    int headerSkipped = 0;
+                    int headerSkipper = 0;
                     while (reader.Read())
                     {
 
-                        if (headerSkipped < 2)
+                        if (headerSkipper < 2)
                         {
-                            headerSkipped++;
+                            headerSkipper++;
                             continue;
                         }
                         /*if (
@@ -109,6 +89,8 @@ namespace ExcelReader.Services
                         reportCompanyScores.Add(companyScore);
                     }
                 }
+
+            
             
             return reportCompanyScores;
 
