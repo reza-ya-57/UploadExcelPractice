@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace ExcelReader.Models;
 
 public partial class ReportCompanyScore
 {
+    [Key]
     public long Id { get; set; }
+    public long CompanyId { get; set; }
     public string? Name { get; set; }
 
     public string? Weight { get; set; }
@@ -25,4 +28,6 @@ public partial class ReportCompanyScore
     public byte? Rank { get; set; }
 
     public int? AgencyCount { get; set; }
+
+    public short? PeriodDate { get; set; }
 }

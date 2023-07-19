@@ -11,37 +11,31 @@ namespace ExcelReader.Controllers
     public class CompanyController : ControllerBase
     {
         private readonly IRepository _companyRepo;
-        public CompanyController(IRepository companyRepo)
+        private readonly IExcelUploadService _excelService;
+        private readonly ILogger _logger;
+        public CompanyController(IRepository companyRepo, IExcelUploadService excelService, ILogger logger)
         {
+            _excelService = excelService;
             _companyRepo = companyRepo;
+            _logger = logger;
         }
-        [HttpGet]
-        public async Task<IActionResult> GetCompanies()
+       
+
+        [HttpGet("Read")]
+        public IActionResult ReadExcel(short periodDate)
         {
-            try
-            {
-                var companies = await _companyRepo.GetCompanies();
-                return Ok(companies);
-            }
-            catch (Exception ex)
-            {
-                //log error
-                return StatusCode(500, ex.Message);
-            }
+           
+            var a = ExcelReadService.ReadExcel( file , periodDate);
+            return Ok(a);
         }
-        [HttpGet("Test")]
-        public IActionResult Testapp()
+        [HttpPost("Upload")]
+        public IActionResult UploadExcel(IFormFile file , short periodDate)
         {
-            try
-            {
-                var a = ExcelReaderService.ReadExcel();
+            
+            _logger.LogInformation(file.FileName);
+
+            var a =_excelService.UploadExcel(file , periodDate);
                 return Ok(a);
-            }
-            catch (Exception ex)
-            {
-                //log error
-                return StatusCode(500, ex.Message);
-            }
         }
     }
 }
